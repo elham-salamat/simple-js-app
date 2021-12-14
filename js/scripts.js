@@ -1,6 +1,6 @@
-let pokemonList = [];
+let repository = [];
 
-pokemonList[0] = {
+repository[0] = {
     name: 'Bulbasaur',
     height: 0.7,
     type: [
@@ -8,7 +8,7 @@ pokemonList[0] = {
     ]
 }
 
-pokemonList[1] = {
+repository[1] = {
     name: 'Charizard',
     height: 1.7,
     type: [
@@ -16,7 +16,7 @@ pokemonList[1] = {
     ]
 }
 
-pokemonList[2] = {
+repository[2] = {
     name: 'Kakuna',
     height: 0.6,
     type: [
@@ -24,7 +24,7 @@ pokemonList[2] = {
     ]
 }
 
-pokemonList[3] = {
+repository[3] = {
     name: 'Pidgey',
     height: 0.3,
     type: [
@@ -33,7 +33,7 @@ pokemonList[3] = {
 }
 
 
-pokemonList[4] = {
+repository[4] = {
     name: 'Pidgeot',
     height: 1.5,
     type: [
@@ -41,6 +41,32 @@ pokemonList[4] = {
     ]
 }
 
-for (let i = 0; i < pokemonList.length; i++) {
-    document.write(pokemonList[i].name + '\n');
+// extracting the tallest pokemon in the database
+let pokemonHeights = [];
+
+for(let i = 0; i < repository.length; i++) {
+  pokemonHeights[i] = repository[i].height;
 }
+
+let maxHeight = Math.max(...pokemonHeights);
+
+function function1() {
+  let ul = document.getElementById("pokemonlist");
+
+  // creating the pokemon list available in repository
+  for (i = 0; i < repository.length; i++) {
+      let li = document.createElement("li");
+
+      // highlighting the tallest pokemon
+      if (repository[i].height !== maxHeight) {
+          li.appendChild(document.createTextNode(`${repository[i].name} (height: ${repository[i].height})`));
+      } else {
+        li.appendChild(document.createTextNode(`${repository[i].name} (height: ${repository[i].height}): This is the tallest  pokeman in the list`));
+      }
+
+      ul.appendChild(li);
+  }
+
+}
+
+function1();
