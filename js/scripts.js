@@ -1,6 +1,6 @@
-let repository = [];
+let pokemonRepository = [];
 
-repository[0] = {
+pokemonRepository[0] = {
     name: 'Bulbasaur',
     height: 0.7,
     type: [
@@ -8,7 +8,7 @@ repository[0] = {
     ]
 }
 
-repository[1] = {
+pokemonRepository[1] = {
     name: 'Charizard',
     height: 1.7,
     type: [
@@ -16,7 +16,7 @@ repository[1] = {
     ]
 }
 
-repository[2] = {
+pokemonRepository[2] = {
     name: 'Kakuna',
     height: 0.6,
     type: [
@@ -24,7 +24,7 @@ repository[2] = {
     ]
 }
 
-repository[3] = {
+pokemonRepository[3] = {
     name: 'Pidgey',
     height: 0.3,
     type: [
@@ -33,7 +33,7 @@ repository[3] = {
 }
 
 
-repository[4] = {
+pokemonRepository[4] = {
     name: 'Pidgeot',
     height: 1.5,
     type: [
@@ -44,29 +44,33 @@ repository[4] = {
 // extracting the tallest pokemon in the database
 let pokemonHeights = [];
 
-for(let i = 0; i < repository.length; i++) {
-  pokemonHeights[i] = repository[i].height;
+pokemonRepository.forEach(heightArrayCreation);
+
+function heightArrayCreation(pokemon) {
+    pokemonHeights.push(pokemon.height);
 }
 
 let maxHeight = Math.max(...pokemonHeights);
 
+// appending the list items(pokemons' list) to ul element
 function function1() {
-  let ul = document.getElementById("pokemonlist");
+    let ul = document.getElementById("pokemonlist");
 
-  // creating the pokemon list available in repository
-  for (i = 0; i < repository.length; i++) {
-      let li = document.createElement("li");
+    // creating the pokemon list available in repository
+    pokemonRepository.forEach(pokemonInfosRepresentation);
 
-      // highlighting the tallest pokemon
-      if (repository[i].height !== maxHeight) {
-          li.appendChild(document.createTextNode(`${repository[i].name} (height: ${repository[i].height})`));
-      } else {
-        li.appendChild(document.createTextNode(`${repository[i].name} (height: ${repository[i].height}): This is the tallest  pokeman in the list`));
-      }
+    function pokemonInfosRepresentation(pokemon) {
+        let li = document.createElement("li");
 
-      ul.appendChild(li);
-  }
+        // highlighting the tallest pokemon
+        if (pokemon.height !== maxHeight) {
+            li.appendChild(document.createTextNode(`${pokemon.name} (height: ${pokemon.height})`));
+        } else {
+            li.appendChild(document.createTextNode(`${pokemon.name} (height: ${pokemon.height}): This is the tallest  pokeman in the list`));
+        }
 
+        ul.appendChild(li);
+    }
 }
 
 function1();
