@@ -1,50 +1,66 @@
-let pokemonRepository = [];
 
-pokemonRepository[0] = {
+let pokemonRepository = (function () {
+    let pokemonList = [];
+
+    function add(pokemon) {
+        pokemonList.push(pokemon);
+    }
+
+    function getAll() {
+        return pokemonList
+    }
+
+    return {
+      add: add,
+      getAll: getAll
+    }
+
+})();
+
+pokemonRepository.add({
     name: 'Bulbasaur',
     height: 0.7,
     type: [
         'grass', 'poison'
     ]
-}
+});
 
-pokemonRepository[1] = {
+pokemonRepository.add({
     name: 'Charizard',
     height: 1.7,
     type: [
         'fire', 'flying'
     ]
-}
+});
 
-pokemonRepository[2] = {
+pokemonRepository.add({
     name: 'Kakuna',
     height: 0.6,
     type: [
         'bug', 'poison'
     ]
-}
+});
 
-pokemonRepository[3] = {
+pokemonRepository.add({
     name: 'Pidgey',
     height: 0.3,
     type: [
         'flying', 'normal'
     ]
-}
+});
 
-
-pokemonRepository[4] = {
+pokemonRepository.add({
     name: 'Pidgeot',
     height: 1.5,
     type: [
         'flying', 'normal'
     ]
-}
+});
 
-// extracting the tallest pokemon in the database
+// extracting the tallest pokemon in the pokemonRepository
 let pokemonHeights = [];
 
-pokemonRepository.forEach(heightArrayCreation);
+pokemonRepository.getAll().forEach(heightArrayCreation);
 
 function heightArrayCreation(pokemon) {
     pokemonHeights.push(pokemon.height);
@@ -57,7 +73,7 @@ function function1() {
     let ul = document.getElementById("pokemonlist");
 
     // creating the pokemon list available in repository
-    pokemonRepository.forEach(pokemonInfosRepresentation);
+    pokemonRepository.getAll().forEach(pokemonInfosRepresentation);
 
     function pokemonInfosRepresentation(pokemon) {
         let li = document.createElement("li");
