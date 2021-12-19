@@ -39,17 +39,26 @@ h1 {
   border: 2px solid black;
 }
 
-.pokemonlist  {
+.pokemon-list  {
   margin-left: -45px;
 }
 
-.pokemonlist li {
+.pokemon-list li {
   list-style-type: none;
   background-color: #e0e0d1;
   padding: 10px;
   margin: 10px 30px 10px 30px;
   border: 2px solid black;
 }
+
+/* removing all the default styles on butons */
+.pokemon {
+  background: transparent;
+  box-shadow: 0px 0px 0px transparent;
+  border: 0px solid transparent;
+  text-shadow: 0px 0px 0px transparent;
+}
+
 
 @media all and (max-width: 500px) {
   .body {
