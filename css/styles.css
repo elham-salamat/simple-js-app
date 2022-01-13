@@ -35,7 +35,7 @@ ul {
 
 #pokemon-list > li {
   padding: 0;
-
+  /* border: 1px solid gray; */
   border: none;
   border-radius: 0;
 }
@@ -46,7 +46,19 @@ ul {
   color: black;
   border: none;
   width: 100%;
+  border: 1px solid gray;
 }
+.btn:hover, .btn:active {
+  background-color: lightgray;
+  color: black;
+  border: none;
+
+  /* border: 1px solid rgba(0, 0, 0, 0.3); */
+  border-radius: 5px;
+  transition: 0.5s opacity;
+
+}
+
 
 #pokemon-list > li.color1 {
   background-color: lightgray;

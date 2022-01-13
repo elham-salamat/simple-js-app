@@ -21,14 +21,12 @@ let pokemonRepository = (function () {
     // function to create and represent the pokemon item in web browser
     function addListItem(pokemon) {
         let ul = document.querySelector('#pokemon-list');
-        // let ul = pokemonContainer;
         let listItem = document.createElement('li');
         listItem.classList.add('list-group-item');
-        listItem.classList.add('col-lg-3');
-        // listItem.classList.add('col-md-4');
-        listItem.classList.add('col-sm-4');
+        // listItem.classList.add('col-lg-4');
+        listItem.classList.add('col-md-4');
+        listItem.classList.add('col-sm-6');
         listItem.classList.add('col-12');
-        // listItem.classList.add('meh');
 
         let button = document.createElement('button');
         button.innerText = pokemon.name;
@@ -37,15 +35,12 @@ let pokemonRepository = (function () {
         button.setAttribute('data-toggle','modal');
         button.setAttribute('data-target','#modal-container');
 
+        button.addEventListener('click', function () {
+            showDetails(pokemon);
+        });
 
         listItem.appendChild(button);
-
-        // onclick functionality of listItem (pokemon name)
-        // onClick(button, pokemon);
-
         ul.appendChild(listItem);
-        // console.log(document.querySelectorAll('#pokemon>li'));
-
     }
 
 
@@ -81,13 +76,21 @@ let pokemonRepository = (function () {
         })
     }
 
+    function showDetails(pokemon) {
+        loadDetails(pokemon).then(function () {
+            pokemonInfoInModal(pokemon);
+        });
+    }
+
     function pokemonInfoInModal(pokemon) {
 
-        let pokemonName = document.querySelector('#modal-title');
-        let pokemonInfo = document.querySelector('.modal-body');
+        let modalTitle = $('.modal-title');
+        let pokemonInfo = $('.modal-body');
 
-        pokemonName.empty();
+        modalTitle.empty();
         pokemonInfo.empty();
+
+        modalTitle.text(pokemon.name.toUpperCase());
 
         let pokemonHeight = document.createElement('p');
         pokemonHeight.classList.add('pokemon-height');
@@ -95,14 +98,9 @@ let pokemonRepository = (function () {
         let pokemonImg = document.createElement('IMG');
         pokemonImg.classList.add('pokemon-image');
 
-        loadDetails(pokemon).then(function(){
-            pokemonName.innerText = pokemon.name.toUpperCase();
-            console.log(pokemonName.innerText);
-            pokemonHeight.innerText = `Height: ${pokemon.height}`;
-            pokemonImg.setAttribute('src', pokemon.imageUrl);
-            pokemonImg.setAttribute('alt', 'pokemon picture');
-
-        }) ;
+        pokemonHeight.innerText = `Height: ${pokemon.height}`;
+        pokemonImg.setAttribute('src', pokemon.imageUrl);
+        pokemonImg.setAttribute('alt', 'pokemon picture');
 
         pokemonInfo.append(pokemonHeight);
         pokemonInfo.append(pokemonImg);
@@ -125,6 +123,7 @@ let pokemonRepository = (function () {
           pokemonRepository.getAll().forEach(function (pokemon) {
               pokemonRepository.addListItem(pokemon);
           });
+          // chessColor();
       });
 
   })();
@@ -169,5 +168,3 @@ let pokemonRepository = (function () {
       });
 
 }
-
-setTimeout(chessColor,100);
