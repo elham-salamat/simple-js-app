@@ -1,4 +1,69 @@
 
+
+// Calculating the number of items per row to responsive pagination
+function getNumberOfItemsPerRow(list) {
+    var counter = 0;
+    var firstRowOffsetTop = list[0].offsetTop;
+
+    list.forEach(function(square) {
+        if (square.offsetTop === firstRowOffsetTop) {
+            counter += 1;
+        }
+    });
+
+    return counter;
+}
+
+// Distribute the list of pokemon in different pages
+function pagination() {
+    let pokemonListItems = document.querySelectorAll('#pokemon-list>li');
+    let itemsPerRow = getNumberOfItemsPerRow(pokemonListItems);
+    let totalNumberOfPokemon = $('#pokemon-list .list-group-item').length;
+    let pageLimits = 11 * itemsPerRow;
+    let numberOfPages = Math.ceil(totalNumberOfPokemon / pageLimits);
+
+
+    // Creation of pagination elements
+    $('#pokemon-list .list-group-item:gt(' + (pageLimits - 1) + ')').hide();
+
+    $('.pagination').append('<li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>');
+
+
+    for (let i = 2; i <= numberOfPages; i++) {
+        $('.pagination').append('<li class="page-item"><a class="page-link" href="javascript:void(0)">' + i + '</a></li>');
+
+    }
+
+    $('.pagination').append('<li id="next"><a class="page-link" href="javascript:void(0)" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>');
+
+    if (itemsPerRow === 1) {
+      $('.page-link').addClass('mobile-size');
+    }
+
+    // Representation of different pages
+    $('#pagination li.page-item').on('click', function() {
+
+        if($(this).hasClass('active')) {
+            return false;
+        } else {
+          let currentPage = $(this).index();
+          $('#pagination li').removeClass('active');
+          $(this).addClass('active');
+          $('#pokemon-list .list-group-item').hide();
+          let grandTotal = pageLimits * currentPage;
+
+          for(let i = grandTotal - pageLimits; i < grandTotal; i++) {
+            $('#pokemon-list .list-group-item:eq(' + i + ')').show();
+          }
+        }
+
+
+
+    })
+    return [numberOfPages, pageLimits]
+
+}
+
 // pokemonRepository creation and retrievement function
 let pokemonRepository = (function () {
 
@@ -23,7 +88,8 @@ let pokemonRepository = (function () {
         let ul = document.querySelector('#pokemon-list');
         let listItem = document.createElement('li');
         listItem.classList.add('list-group-item');
-        // listItem.classList.add('col-lg-4');
+        listItem.classList.add('col-xl-2');
+        listItem.classList.add('col-lg-3');
         listItem.classList.add('col-md-4');
         listItem.classList.add('col-sm-6');
         listItem.classList.add('col-12');
@@ -117,54 +183,55 @@ let pokemonRepository = (function () {
 })();
 
 
+
+
 (function () {
+    pokemonRepository.loadPokemonList().then(function (Response) {
+        pokemonRepository.getAll().forEach(function (pokemon) {
+            pokemonRepository.addListItem(pokemon);
+        });
+        let paginationInfo = pagination();
 
-      pokemonRepository.loadPokemonList().then(function (Response) {
-          pokemonRepository.getAll().forEach(function (pokemon) {
-              pokemonRepository.addListItem(pokemon);
-          });
-          // chessColor();
-      });
+        $('#next').on('click', function() {
+            let currentPage = $('.pagination>li.active').index();
 
-  })();
+            if (currentPage === paginationInfo[0]) {
+                return false
+            }
+            else {
+                currentPage++;
+
+                $('#pagination li').removeClass('active');
+                $('#pokemon-list .list-group-item').hide();
+                let grandTotal = paginationInfo[1] * currentPage;
 
 
-  function getNumberOfItemsPerRow(pokemonList) {
-      var counter = 0;
-      var firstRowOffsetTop = pokemonList[0].offsetTop;
-      pokemonList.forEach(function(square) {
-          if (square.offsetTop === firstRowOffsetTop) {
-              counter += 1;
-          }
-      });
+                for (let i = grandTotal - paginationInfo[1]; i < grandTotal; i++) {
+                    $('#pokemon-list .list-group-item:eq(' + i + ')').show();
+                }
+                $('.pagination li.page-item:eq(' + (currentPage - 1) + ')').addClass('active');
 
-      return counter;
-  }
+            }
+        });
 
-  function chessColor() {
 
-      var squares = document.querySelectorAll('#pokemon-list>li');
-      var itemsPerRow = getNumberOfItemsPerRow(squares);
-      var classToAdd;
-      var oddLine = true;
+        $('#previous').on('click', function() {
+            let currentPage = $('.pagination>li.active').index();
 
-      squares.forEach(function(square, index) {
+            if (currentPage === 1) {
+                return false
+            } else {
+                currentPage--;
+                $('#pagination li').removeClass('active');
+                $('#pokemon-list .list-group-item').hide();
 
-          if (itemsPerRow % 2) {
-              classToAdd = index % 2 ? 'color1' : 'color2';
-          } else {
-              if (oddLine) {
-                  classToAdd = index % 2 ? 'color1' : 'color2';
-              } else {
-                  classToAdd = index % 2 ? 'color2' : 'color1';
-              }
-          }
+                let grandTotal = paginationInfo[1] * currentPage;
 
-          if ((index + 1) % itemsPerRow === 0) {
-              oddLine = !oddLine;
-          }
-
-          square.classList.add(classToAdd);
-      });
-
-}
+                for (let i = grandTotal - paginationInfo[1]; i < grandTotal; i++) {
+                    $('#pokemon-list .list-group-item:eq(' + i + ')').show();
+                }
+                $('.pagination li.page-item:eq(' + (currentPage - 1) + ')').addClass('active');
+            }
+        });
+    });
+})();
